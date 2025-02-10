@@ -1,6 +1,18 @@
 {
+  "name": "myapp",
+  "version": "1.0.0",
+  "description": "My Node.js App on Heroku",
+  "main": "app_https.js",
+  "scripts": {
+    "start": "node app_https.js"
+  },
   "dependencies": {
     "express": "^4.19.2",
-    "express-static": "^1.2.6"
+    "express-static": "^1.2.6",
+    "myapp": "file:"
+  },
+  "engines": {
+    "node": "18.20.4",
+    "npm": "10.7.0"
   }
 }
