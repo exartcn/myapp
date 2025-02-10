@@ -1,5 +1,5 @@
 const fs = require('fs');
-const https = require('https');
+const PORT = process.env.PORT || 3000;
 const express = require('express');
 const path = require('path');
 
@@ -13,7 +13,6 @@ const options = {
 
 app.use('/.well-known', express.static(path.join(__dirname, 'public')));
 
-// 创建 HTTPS 服务器
-https.createServer(options, app).listen(443, () => {
-    console.log('HTTPS Server running on port 443');
-});
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
