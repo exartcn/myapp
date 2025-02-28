@@ -13,7 +13,7 @@ const options = {
 
 app.use('/.well-known', express.static(path.join(__dirname, 'public')));
 
-app.get('/deeplink:id', (req, res) => {
+app.get('/deeplink/:id', (req, res) => {
     const userAgent = req.headers['user-agent'].toLowerCase();
     console.log(userAgent);
     
