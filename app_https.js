@@ -53,6 +53,24 @@ app.get('/deeplinkb/:id', (req, res) => {
   }
 });
 
+
+app.get('/webpage', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="zh">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Webpage</title>
+    </head>
+    <body>
+        <h1>ようこそ</h1>
+        <p><a href="https://apps.apple.com/jp/app/google-authenticator/id388497605" target="_blank">こちらをクリック</a></p>
+    </body>
+    </html>
+  `);
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
