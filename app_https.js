@@ -11,7 +11,49 @@ const options = {
     cert: fs.readFileSync(path.join(__dirname, 'server.cert'))
 };
 
-app.use('/.well-known', express.static(path.join(__dirname, 'public')));
+
+//json作成
+
+const combinedConfig = {
+  ios: {
+    "applinks": {
+      "apps": [],
+      "details": [
+        {
+          "appID": "7Y9M87SSC3.com.tis.test76",
+          "paths": ["/deeplinkb/*"]
+        }
+      ]
+    }
+  },
+  android: [
+    {
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.myapp",
+        "sha256_cert_fingerprints": [
+          "FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C"
+        ]
+      }
+    }
+  ]
+};
+
+// iOS
+app.get('/.well-known/apple-app-site-association', (req, res) => {
+  res.set('Content-Type', 'application/json');
+  res.json(combinedConfig.ios);
+});
+
+// Android
+app.get('/.well-known/assetlinks.json', (req, res) => {
+  res.set('Content-Type', 'application/json');
+  res.json(combinedConfig.android);
+});
+
+
+
 
 app.get('/deeplink/:id', (req, res) => {
     const userAgent = req.headers['user-agent'].toLowerCase();
