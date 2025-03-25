@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "7Y9M87SSC3.com.tis.test76",
+        "paths": ["/deeplinkb/*"]
+      }
+    ]
+  }
+}
+
