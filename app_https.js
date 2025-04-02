@@ -42,7 +42,7 @@ const combinedConfig = {
 
 // iOS
 app.get('/.well-known/apple-app-site-association', (req, res) => {
-  res.set('Content-Type', 'application/pkcs7-mime');
+  res.set('Content-Type', 'application/json');
   res.json(combinedConfig.ios);
 });
 
