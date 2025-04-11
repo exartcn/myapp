@@ -75,7 +75,7 @@ app.get('/deeplink/:id', (req, res) => {
     }
 });
 
-app.get('/cmm-bff/common/auth/deeplink/:id', (req, res) => {
+app.get('/cmm-bff/common/auth/deeplink', (req, res) => {
   const userAgent = req.headers['user-agent'].toLowerCase();
   console.log(userAgent);
   
