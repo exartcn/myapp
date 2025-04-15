@@ -37,6 +37,12 @@ const combinedConfig = {
         ]
       }
     }
+  ],
+  windows:[
+    {
+      "packageFamilyName": "51b9d83b-b970-4f68-8dba-1647c3741a3b_n36ep7xv46m82",
+      "paths": [ "*" ]
+    }
   ]
 };
 
@@ -50,6 +56,12 @@ app.get('/.well-known/apple-app-site-association', (req, res) => {
 app.get('/.well-known/assetlinks.json', (req, res) => {
   res.set('Content-Type', 'application/json');
   res.json(combinedConfig.android);
+});
+
+// windows
+app.get('/.well-known/windows-app-web-link', (req, res) => {
+  res.set('Content-Type', 'application/json');
+  res.json(combinedConfig.windows);
 });
 
 
