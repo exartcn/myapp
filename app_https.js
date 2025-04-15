@@ -11,7 +11,7 @@ const options = {
     cert: fs.readFileSync(path.join(__dirname, 'server.cert'))
 };
 
-
+app.use('/.well-known', express.static(path.join(__dirname, 'public', '.well-known')));
 //json作成
 
 const combinedConfig = {
@@ -48,27 +48,27 @@ const combinedConfig = {
 };
 
 // iOS
-app.get('/.well-known/apple-app-site-association', (req, res) => {
-  res.set('Content-Type', 'application/json');
-  res.json(combinedConfig.ios);
-});
+// app.get('/.well-known/apple-app-site-association', (req, res) => {
+//   res.set('Content-Type', 'application/json');
+//   res.json(combinedConfig.ios);
+// });
 
-// Android
-app.get('/.well-known/assetlinks.json', (req, res) => {
-  res.set('Content-Type', 'application/json');
-  res.json(combinedConfig.android);
-});
+// // Android
+// app.get('/.well-known/assetlinks.json', (req, res) => {
+//   res.set('Content-Type', 'application/json');
+//   res.json(combinedConfig.android);
+// });
 
-// windows
-app.get('/.well-known/windows-app-web-link', (req, res) => {
-  res.set('Content-Type', 'application/json');
-  res.json(combinedConfig.windows);
-});
+// // windows
+// app.get('/.well-known/windows-app-web-link', (req, res) => {
+//   res.set('Content-Type', 'application/json');
+//   res.json(combinedConfig.windows);
+// });
 
-app.get('/windows-app-web-link', (req, res) => {
-  res.set('Content-Type', 'application/json');
-  res.json(combinedConfig.windows);
-});
+// app.get('/windows-app-web-link', (req, res) => {
+//   res.set('Content-Type', 'application/json');
+//   res.json(combinedConfig.windows);
+// });
 
 
 
