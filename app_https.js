@@ -11,7 +11,11 @@ const options = {
     cert: fs.readFileSync(path.join(__dirname, 'server.cert'))
 };
 
-app.use('/.well-known', express.static(path.join(__dirname, 'public')));
+app.use('/.well-known', express.static(path.join(__dirname, 'public'),{
+  setHeaders: function (res, path) {
+    res.set('Content-Type', 'application/json');
+  }
+}));
 //json作成
 
 const combinedConfig = {
