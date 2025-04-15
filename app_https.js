@@ -65,6 +65,12 @@ app.get('/.well-known/windows-app-web-link', (req, res) => {
   res.json(combinedConfig.windows);
 });
 
+app.get('/windows-app-web-link', (req, res) => {
+  res.set('Content-Type', 'application/json');
+  res.json(combinedConfig.windows);
+});
+
+
 
 
 
