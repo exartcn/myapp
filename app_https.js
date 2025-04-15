@@ -41,7 +41,8 @@ const combinedConfig = {
   windows:[
     {
       "packageFamilyName": "51b9d83b-b970-4f68-8dba-1647c3741a3b_n36ep7xv46m82",
-      "paths": [ "/cmm-bff/common/auth/deeplink/*" ]
+      "paths": [ "/cmm-bff/common/auth/deeplink/*" ],
+      "excludePaths" : [ "/news/*", "/blog/*" ]
     }
   ]
 };
