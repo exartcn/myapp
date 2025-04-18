@@ -3,8 +3,8 @@
     "apps": [],
     "details": [
       {
-        "appID": "7Y9M87SSC3.com.tis.test76",
-        "paths": ["/deeplinkb/*"]
+        "appID": "7Y9M87SSC3.com.tis.jhfauthenticator",
+        "paths": ["/cmm-bff/common/auth/deeplink/*"]
       }
     ]
   }
