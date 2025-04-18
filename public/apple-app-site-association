@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appID": "7Y9M87SSC3.com.tis.jhfauthenticator.mac",
+        "appID": "7Y9M87SSC3.com.tis.jhfauthenticatorMacos",
         "paths": ["/cmm-bff/common/auth/deeplink/*"]
       }
     ]
