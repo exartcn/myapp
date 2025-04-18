@@ -16,6 +16,13 @@ app.use('/.well-known', express.static(path.join(__dirname, 'public'),{
     res.set('Content-Type', 'application/json');
   }
 }));
+
+
+app.use('/windows-app-web-link', express.static(path.join(__dirname, 'public', 'windows-app-web-link'),{
+  setHeaders: function (res, path) {
+    res.set('Content-Type', 'application/json');
+  }
+}));
 //json作成
 
 const combinedConfig = {
