@@ -116,7 +116,7 @@ app.get('/cmm-bff/common/auth/deeplink/:id?', (req, res) => {
     // Android デバイス - Google Play へリダイレクト
     res.redirect('https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill');
   } else if (/windows/.test(userAgent)) {
-    res.redirect('https://apps.microsoft.com/detail/9NH2GPH4JZS4?hl=neutral&gl=JP&ocid=pdpshare');
+    res.redirect('ms-windows-store://pdp/?ProductId=9nh2gph4jzs4');
   } else if (/mac/.test(userAgent)) {
     res.redirect('https://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864');
   } else {
