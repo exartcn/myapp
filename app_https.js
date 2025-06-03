@@ -9,9 +9,22 @@ const app = express();
 const options = {
     key: fs.readFileSync(path.join(__dirname, 'server.key')),
     cert: fs.readFileSync(path.join(__dirname, 'server.cert'))
+    
 };
 
+
+app.use('/.well-known/assetlinks.json', (req, res, next) => {
+  console.log(`[Deeplink] User-Agent: ${req.headers['user-agent']}`);
+  next();
+});
+
+app.use('/.well-known/apple-app-site-association', (req, res, next) => {
+  console.log(`[Deeplink] User-Agent: ${req.headers['user-agent']}`);
+  next();
+});
+
 app.use('/.well-known', express.static(path.join(__dirname, 'public'),{
+  
   setHeaders: function (res, path) {
     res.set('Content-Type', 'application/json');
   }
