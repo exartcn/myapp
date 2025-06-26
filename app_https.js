@@ -131,7 +131,7 @@ app.get('/cmm-bff/common/auth/deeplink/:id?', (req, res) => {
   } else if (/windows/.test(userAgent)) {
     res.redirect('ms-windows-store://pdp/?ProductId=9nh2gph4jzs4');
   } else if (/mac/.test(userAgent)) {
-    res.redirect('macappstore://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864');
+    res.redirect('https://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864');
   } else {
     // その他のデバイス - デフォルトページを表示
     res.send('iOS または Android デバイスでアクセスしてください。');
