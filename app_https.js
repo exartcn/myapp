@@ -118,22 +118,67 @@ app.get('/deeplink/:id', (req, res) => {
     }
 });
 
+// app.get('/cmm-bff/common/auth/deeplink/:id?', (req, res) => {
+//   const userAgent = req.headers['user-agent'].toLowerCase();
+//   console.log(userAgent);
+  
+//   if (/iphone|ipad|ipod/.test(userAgent)) {
+//     // iOS デバイス - App Store へリダイレクト
+//     res.redirect('https://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864');
+//   } else if (/android/.test(userAgent)) {
+//     // Android デバイス - Google Play へリダイレクト
+//     res.redirect('https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill');
+//   } else if (/windows/.test(userAgent)) {
+//     res.redirect('ms-windows-store://pdp/?ProductId=9nh2gph4jzs4');
+//   } else if (/mac/.test(userAgent)) {
+//     res.redirect('macappstore://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864');
+//   } else {
+//     // その他のデバイス - デフォルトページを表示
+//     res.send('iOS または Android デバイスでアクセスしてください。');
+//   }
+// });
+
+
+
 app.get('/cmm-bff/common/auth/deeplink/:id?', (req, res) => {
   const userAgent = req.headers['user-agent'].toLowerCase();
   console.log(userAgent);
-  
+
+  let redirectUrl = '';
   if (/iphone|ipad|ipod/.test(userAgent)) {
-    // iOS デバイス - App Store へリダイレクト
-    res.redirect('https://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864');
+    // iOS デバイス - App Store
+    redirectUrl = 'https://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864';
   } else if (/android/.test(userAgent)) {
-    // Android デバイス - Google Play へリダイレクト
-    res.redirect('https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill');
+    // Android デバイス - Google Play
+    redirectUrl = 'https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill';
   } else if (/windows/.test(userAgent)) {
-    res.redirect('ms-windows-store://pdp/?ProductId=9nh2gph4jzs4');
+    redirectUrl = 'ms-windows-store://pdp/?ProductId=9nh2gph4jzs4';
   } else if (/mac/.test(userAgent)) {
-    res.redirect('macappstore://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864');
+    redirectUrl = 'macappstore://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864';
+  }
+
+  if (redirectUrl) {
+    res.send(`
+      <!DOCTYPE html>
+      <html lang="ja">
+      <head>
+        <meta charset="UTF-8" />
+        <title>リダイレクト中...</title>
+        <script>
+          setTimeout(() => {
+            location.href = "${redirectUrl}";
+            setTimeout(() => {
+              window.close();
+            }, 1000);
+          }, 0);
+        </script>
+      </head>
+      <body>
+        <p>アプリに移動しています...自動で移動しない場合は <a href="${redirectUrl}">こちらをクリック</a></p>
+      </body>
+      </html>
+    `);
   } else {
-    // その他のデバイス - デフォルトページを表示
     res.send('iOS または Android デバイスでアクセスしてください。');
   }
 });
