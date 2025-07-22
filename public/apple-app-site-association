@@ -3,11 +3,11 @@
     "apps": [],
     "details": [
       {
-        "appID": "7Y9M87SSC3.com.jhf.jhfauthenticator.macos",
+        "appID": "7Y9M87SSC3.com.jhf.authenticator.macos",
         "paths": ["/cmm-bff/common/auth/deeplink/*"]
       },
       {
-        "appID": "7Y9M87SSC3.com.jhf.jhfauthenticator.ios",
+        "appID": "7Y9M87SSC3.com.jhf.authenticator.ios",
         "paths": ["/cmm-bff/common/auth/deeplink/*"]
       }
     ]
