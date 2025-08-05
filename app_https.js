@@ -1,74 +1,76 @@
-const fs = require('fs');
+const fs = require("fs");
 const PORT = process.env.PORT || 3000;
-const express = require('express');
-const path = require('path');
+const express = require("express");
+const path = require("path");
 
 const app = express();
 
 // 读取 SSL 证书和私钥
 const options = {
-    key: fs.readFileSync(path.join(__dirname, 'server.key')),
-    cert: fs.readFileSync(path.join(__dirname, 'server.cert'))
-    
+  key: fs.readFileSync(path.join(__dirname, "server.key")),
+  cert: fs.readFileSync(path.join(__dirname, "server.cert")),
 };
 
-
-app.use('/.well-known/assetlinks.json', (req, res, next) => {
-  console.log(`[Deeplink] User-Agent: ${req.headers['user-agent']}`);
+app.use("/.well-known/assetlinks.json", (req, res, next) => {
+  console.log(`[Deeplink] User-Agent: ${req.headers["user-agent"]}`);
   next();
 });
 
-app.use('/.well-known/apple-app-site-association', (req, res, next) => {
-  console.log(`[Deeplink] User-Agent: ${req.headers['user-agent']}`);
+app.use("/.well-known/apple-app-site-association", (req, res, next) => {
+  console.log(`[Deeplink] User-Agent: ${req.headers["user-agent"]}`);
   next();
 });
 
-app.use('/.well-known', express.static(path.join(__dirname, 'public'),{
-  
-  setHeaders: function (res, path) {
-    res.set('Content-Type', 'application/json');
-  }
-}));
+app.use(
+  "/.well-known",
+  express.static(path.join(__dirname, "public"), {
+    setHeaders: function (res, path) {
+      res.set("Content-Type", "application/json");
+    },
+  })
+);
 
-
-app.use('/windows-app-web-link', express.static(path.join(__dirname, 'public', 'windows-app-web-link'),{
-  setHeaders: function (res, path) {
-    res.set('Content-Type', 'application/json');
-  }
-}));
+app.use(
+  "/windows-app-web-link",
+  express.static(path.join(__dirname, "public", "windows-app-web-link"), {
+    setHeaders: function (res, path) {
+      res.set("Content-Type", "application/json");
+    },
+  })
+);
 //json作成
 
 const combinedConfig = {
   ios: {
-    "applinks": {
-      "apps": [],
-      "details": [
+    applinks: {
+      apps: [],
+      details: [
         {
-          "appID": "7Y9M87SSC3.com.tis.test76",
-          "paths": ["/cmm-bff/common/auth/deeplink/*"]
-        }
-      ]
-    }
+          appID: "7Y9M87SSC3.com.tis.test76",
+          paths: ["/cmm-bff/common/auth/deeplink/*"],
+        },
+      ],
+    },
   },
   android: [
     {
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "com.JHFAuthenticator",
-        "sha256_cert_fingerprints": [
-          "FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C"
-        ]
-      }
-    }
+      relation: ["delegate_permission/common.handle_all_urls"],
+      target: {
+        namespace: "android_app",
+        package_name: "com.JHFAuthenticator",
+        sha256_cert_fingerprints: [
+          "FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C",
+        ],
+      },
+    },
   ],
-  windows:[
+  windows: [
     {
-      "packageFamilyName": "51b9d83b-b970-4f68-8dba-1647c3741a3b_n36ep7xv46m82",
-      "paths": [ "*" ],
-      "excludePaths" : [ "/news/*", "/blog/*" ]
-    }
-  ]
+      packageFamilyName: "51b9d83b-b970-4f68-8dba-1647c3741a3b_n36ep7xv46m82",
+      paths: ["*"],
+      excludePaths: ["/news/*", "/blog/*"],
+    },
+  ],
 };
 
 // iOS
@@ -94,51 +96,51 @@ const combinedConfig = {
 //   res.json(combinedConfig.windows);
 // });
 
-
-
-
-
-app.get('/deeplink/:id', (req, res) => {
-    const userAgent = req.headers['user-agent'].toLowerCase();
-    console.log(userAgent);
-    
-    if (/iphone|ipad|ipod/.test(userAgent)) {
-      // iOS デバイス - App Store へリダイレクト
-      res.redirect('itms-apps://apps.apple.com/app/id1235601864');
-    } else if (/android/.test(userAgent)) {
-      // Android デバイス - Google Play へリダイレクト
-      res.redirect('market://details?id=com.zhiliaoapp.musically');
-    } else if (/windows/.test(userAgent)) {
-      res.redirect('ms-windows-store://pdp/?ProductId=9NH2GPH4JZS4');
-    } else if (/mac/.test(userAgent)) {
-      res.redirect('macappstore://itunes.apple.com/app/id1235601864');
-    } else {
-      // その他のデバイス - デフォルトページを表示
-      res.send('iOS または Android デバイスでアクセスしてください。');
-    }
-});
-
-app.get('/cmm-bff/common/auth/deeplink/:id?', (req, res) => {
-  const userAgent = req.headers['user-agent'].toLowerCase();
+app.get("/deeplink/:id", (req, res) => {
+  const userAgent = req.headers["user-agent"].toLowerCase();
   console.log(userAgent);
-  
+
   if (/iphone|ipad|ipod/.test(userAgent)) {
     // iOS デバイス - App Store へリダイレクト
-    res.redirect('https://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864');
+    res.redirect("itms-apps://apps.apple.com/app/id1235601864");
   } else if (/android/.test(userAgent)) {
     // Android デバイス - Google Play へリダイレクト
-    res.redirect('https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill');
+    res.redirect("market://details?id=com.zhiliaoapp.musically");
   } else if (/windows/.test(userAgent)) {
-    res.redirect('ms-windows-store://pdp/?ProductId=9nh2gph4jzs4');
+    res.redirect("ms-windows-store://pdp/?ProductId=9NH2GPH4JZS4");
   } else if (/mac/.test(userAgent)) {
-    res.redirect('macappstore://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864');
+    res.redirect("macappstore://itunes.apple.com/app/id1235601864");
   } else {
     // その他のデバイス - デフォルトページを表示
-    res.send('iOS または Android デバイスでアクセスしてください。');
+    res.send("iOS または Android デバイスでアクセスしてください。");
   }
 });
 
+app.get("/cmm-bff/common/auth/deeplink/:id?", (req, res) => {
+  const userAgent = req.headers["user-agent"].toLowerCase();
+  console.log(userAgent);
 
+  if (/iphone|ipad|ipod/.test(userAgent)) {
+    // iOS デバイス - App Store へリダイレクト
+    res.redirect(
+      "https://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864"
+    );
+  } else if (/android/.test(userAgent)) {
+    // Android デバイス - Google Play へリダイレクト
+    res.redirect(
+      "https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill"
+    );
+  } else if (/windows/.test(userAgent)) {
+    res.redirect("ms-windows-store://pdp/?ProductId=9nh2gph4jzs4");
+  } else if (/mac/.test(userAgent)) {
+    res.redirect(
+      "macappstore://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864"
+    );
+  } else {
+    // その他のデバイス - デフォルトページを表示
+    res.send("iOS または Android デバイスでアクセスしてください。");
+  }
+});
 
 // app.get('/cmm-bff/common/auth/deeplink/:id?', (req, res) => {
 //   const userAgent = req.headers['user-agent'].toLowerCase();
@@ -183,24 +185,27 @@ app.get('/cmm-bff/common/auth/deeplink/:id?', (req, res) => {
 //   }
 // });
 
-
-app.get('/webpage', (req, res) => {
+app.get("/privacy/privacy-policy", (req, res) => {
   res.send(`
     <!DOCTYPE html>
-    <html lang="zh">
+    <html lang="ja">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Webpage</title>
+      <meta charset="UTF-8">
+      <title>プライバシーポリシー</title>
     </head>
     <body>
-        <h1>ようこそ</h1>
-        <p><a href="https://apps.apple.com/jp/app/google-authenticator/id388497605" target="_blank">こちらをクリック</a></p>
+      <h1>プライバシーポリシー</h1>
+      <p>当アプリは、QRコードの読み取りおよび写真撮影などの目的でカメラを使用します。</p>
+      <p>カメラで取得された画像データや情報は、ユーザーの端末内でのみ使用され、サーバー等に送信されることはありません。</p>
+      <p>当アプリは、個人情報を第三者に提供することはありません。</p>
+      <p>今後、プライバシーポリシーに変更があった場合は、このページにてお知らせいたします。</p>
+      <p>本ポリシーに関するお問い合わせは、以下のメールアドレスまでお願いいたします：</p>
+      <p>contact@example.com</p>
     </body>
     </html>
   `);
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+  console.log(`Server is running on port ${PORT}`);
+});
