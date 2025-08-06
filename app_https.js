@@ -216,7 +216,7 @@ app.get("/deeplink/check", (req, res) => {
     <html lang="zh">
     <head>
       <meta charset="UTF-8">
-      <title>Deeplink 打开测试</title>
+      <title>Deeplink テスト</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <style>
         body { font-family: sans-serif; padding: 20px; }
@@ -224,11 +224,11 @@ app.get("/deeplink/check", (req, res) => {
       </style>
     </head>
     <body>
-      <h2>📱 Deeplink 测试页</h2>
-      <p>点击下方按钮分别测试通过不同方式打开 Deeplink URL：</p>
+      <h2>📱 Deeplink テスト</h2>
+      <p>Deeplink URL：</p>
 
-      <button onclick="openViaWindowOpen()">window.open() 打开</button>
-      <button onclick="openViaLocationHref()">location.href 打开</button>
+      <button onclick="openViaWindowOpen()">window.open() </button>
+      <button onclick="openViaLocationHref()">location.href </button>
 
       <script>
         const deeplinkUrl = 'https://st-common.jhf.go.jp/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6';
