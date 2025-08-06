@@ -96,25 +96,25 @@ const combinedConfig = {
 //   res.json(combinedConfig.windows);
 // });
 
-app.get("/deeplink/:id", (req, res) => {
-  const userAgent = req.headers["user-agent"].toLowerCase();
-  console.log(userAgent);
+// app.get("/deeplink/:id", (req, res) => {
+//   const userAgent = req.headers["user-agent"].toLowerCase();
+//   console.log(userAgent);
 
-  if (/iphone|ipad|ipod/.test(userAgent)) {
-    // iOS デバイス - App Store へリダイレクト
-    res.redirect("itms-apps://apps.apple.com/app/id1235601864");
-  } else if (/android/.test(userAgent)) {
-    // Android デバイス - Google Play へリダイレクト
-    res.redirect("market://details?id=com.zhiliaoapp.musically");
-  } else if (/windows/.test(userAgent)) {
-    res.redirect("ms-windows-store://pdp/?ProductId=9NH2GPH4JZS4");
-  } else if (/mac/.test(userAgent)) {
-    res.redirect("macappstore://itunes.apple.com/app/id1235601864");
-  } else {
-    // その他のデバイス - デフォルトページを表示
-    res.send("iOS または Android デバイスでアクセスしてください。");
-  }
-});
+//   if (/iphone|ipad|ipod/.test(userAgent)) {
+//     // iOS デバイス - App Store へリダイレクト
+//     res.redirect("itms-apps://apps.apple.com/app/id1235601864");
+//   } else if (/android/.test(userAgent)) {
+//     // Android デバイス - Google Play へリダイレクト
+//     res.redirect("market://details?id=com.zhiliaoapp.musically");
+//   } else if (/windows/.test(userAgent)) {
+//     res.redirect("ms-windows-store://pdp/?ProductId=9NH2GPH4JZS4");
+//   } else if (/mac/.test(userAgent)) {
+//     res.redirect("macappstore://itunes.apple.com/app/id1235601864");
+//   } else {
+//     // その他のデバイス - デフォルトページを表示
+//     res.send("iOS または Android デバイスでアクセスしてください。");
+//   }
+// });
 
 app.get("/cmm-bff/common/auth/deeplink/:id?", (req, res) => {
   const userAgent = req.headers["user-agent"].toLowerCase();
