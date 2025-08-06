@@ -142,6 +142,9 @@ app.get("/cmm-bff/common/auth/deeplink/:id?", (req, res) => {
   }
 });
 
+
+
+
 // app.get('/cmm-bff/common/auth/deeplink/:id?', (req, res) => {
 //   const userAgent = req.headers['user-agent'].toLowerCase();
 //   console.log(userAgent);
@@ -201,6 +204,43 @@ app.get("/privacy/privacy-policy", (req, res) => {
       <p>今後、プライバシーポリシーに変更があった場合は、このページにてお知らせいたします。</p>
       <p>本ポリシーに関するお問い合わせは、以下のメールアドレスまでお願いいたします：</p>
       <p>contact@example.com</p>
+    </body>
+    </html>
+  `);
+});
+
+
+app.get("/deeplink/check", (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="zh">
+    <head>
+      <meta charset="UTF-8">
+      <title>Deeplink 打开测试</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body { font-family: sans-serif; padding: 20px; }
+        button { font-size: 18px; padding: 10px 20px; margin: 10px; }
+      </style>
+    </head>
+    <body>
+      <h2>📱 Deeplink 测试页</h2>
+      <p>点击下方按钮分别测试通过不同方式打开 Deeplink URL：</p>
+
+      <button onclick="openViaWindowOpen()">window.open() 打开</button>
+      <button onclick="openViaLocationHref()">location.href 打开</button>
+
+      <script>
+        const deeplinkUrl = 'https://st-common.jhf.go.jp/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6';
+
+        function openViaWindowOpen() {
+          window.open(deeplinkUrl);
+        }
+
+        function openViaLocationHref() {
+          window.location.href = deeplinkUrl;
+        }
+      </script>
     </body>
     </html>
   `);
