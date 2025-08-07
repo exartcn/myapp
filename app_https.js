@@ -231,7 +231,7 @@ app.get("/deeplink/check", (req, res) => {
       <button onclick="openViaLocationHref()">location.href </button>
 
       <script>
-        const deeplinkUrl = 'https://st-common.jhf.go.jp/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6';
+        const deeplinkUrl = 'https://deeplink-test-e53b3c0ebf7b.herokuapp.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6';
 
         function openViaWindowOpen() {
           window.open(deeplinkUrl);
