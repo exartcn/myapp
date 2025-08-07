@@ -221,12 +221,12 @@ app.get("/deeplink/check", (req, res) => {
 <body>
   <h1>点击下方按钮启动 App</h1>
 
-  <button onclick="window.location.href='https://deeplink-test-e53b3c0ebf7b.herokuapp.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
-    現行
+  <button onclick="window.location.href='http://deeplink-a.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
+    http://deeplink-a.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6
   </button>
 
-  <button onclick="window.location.href='https://deeplink.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
-    改修後
+  <button onclick="window.location.href='http://deeplink.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
+    http://deeplink.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6
   </button>
 
  
