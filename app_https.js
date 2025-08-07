@@ -116,31 +116,31 @@ const combinedConfig = {
 //   }
 // });
 
-// app.get("/cmm-bff/common/auth/deeplink/:id?", (req, res) => {
-//   const userAgent = req.headers["user-agent"].toLowerCase();
-//   console.log(userAgent);
+app.get("/cmm-bff/common/auth/deeplink/:id?", (req, res) => {
+  const userAgent = req.headers["user-agent"].toLowerCase();
+  console.log(userAgent);
 
-//   if (/iphone|ipad|ipod/.test(userAgent)) {
-//     // iOS デバイス - App Store へリダイレクト
-//     res.redirect(
-//       "https://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864"
-//     );
-//   } else if (/android/.test(userAgent)) {
-//     // Android デバイス - Google Play へリダイレクト
-//     res.redirect(
-//       "https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill"
-//     );
-//   } else if (/windows/.test(userAgent)) {
-//     res.redirect("ms-windows-store://pdp/?ProductId=9nh2gph4jzs4");
-//   } else if (/mac/.test(userAgent)) {
-//     res.redirect(
-//       "macappstore://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864"
-//     );
-//   } else {
-//     // その他のデバイス - デフォルトページを表示
-//     res.send("iOS または Android デバイスでアクセスしてください。");
-//   }
-// });
+  if (/iphone|ipad|ipod/.test(userAgent)) {
+    // iOS デバイス - App Store へリダイレクト
+    res.redirect(
+      "https://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864"
+    );
+  } else if (/android/.test(userAgent)) {
+    // Android デバイス - Google Play へリダイレクト
+    res.redirect(
+      "https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill"
+    );
+  } else if (/windows/.test(userAgent)) {
+    res.redirect("ms-windows-store://pdp/?ProductId=9nh2gph4jzs4");
+  } else if (/mac/.test(userAgent)) {
+    res.redirect(
+      "macappstore://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864"
+    );
+  } else {
+    // その他のデバイス - デフォルトページを表示
+    res.send("iOS または Android デバイスでアクセスしてください。");
+  }
+});
 
 
 
@@ -213,56 +213,23 @@ app.get("/privacy/privacy-policy", (req, res) => {
 app.get("/deeplink/check", (req, res) => {
   res.send(`
     <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>アプリを開く</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding-top: 100px;
-    }
-    button {
-      font-size: 20px;
-      padding: 12px 24px;
-      background: #007aff;
-      color: white;
-      border: none;
-      border-radius: 8px;
-    }
-  </style>
+  <title>Deeplink Demo</title>
 </head>
 <body>
+  <h1>点击下方按钮启动 App</h1>
 
-  <h1>アプリを起動しますか？</h1>
-  <button onclick="openApp()">アプリを開く</button>
+  <button onclick="window.location.href='https://deeplink-test-e53b3c0ebf7b.herokuapp.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
+    現行
+  </button>
 
-  <script>
-    const deeplinkUrl = "https://deeplink-test-e53b3c0ebf7b.herokuapp.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6";
-    const fallbackUrl = "hhttps://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864"; // ← ここにApp StoreのURLを入れてください
+  <button onclick="window.location.href='https://deeplink.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
+    改修後
+  </button>
 
-    function openApp() {
-      const now = Date.now();
-      let hasBlurred = false;
-
-      // 如果用户切换到 App，页面会失焦
-      window.addEventListener('blur', () => {
-        hasBlurred = true;
-      });
-
-      // 跳转到 App（必须是用户点击触发）
-      window.location.href = deeplinkUrl;
-
-      // 1秒后判断是否失焦，否则跳转 App Store
-      setTimeout(() => {
-        if (!hasBlurred) {
-          window.location.href = fallbackUrl;
-        }
-      }, 1000);
-    }
-  </script>
-
+ 
 </body>
 </html>
 
