@@ -216,7 +216,36 @@ app.get("/deeplink/check", (req, res) => {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deeplink Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      margin: 10px 0;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
   <h1>同様なドメインでディープリンクの検証</h1>
@@ -229,9 +258,9 @@ app.get("/deeplink/check", (req, res) => {
     ディープリンクドメインは：http://deeplink.exartcn.com/
   </button>
 
- 
 </body>
 </html>
+
 
   `);
 });
