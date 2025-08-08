@@ -251,7 +251,7 @@ app.get("/deeplink/check", (req, res) => {
   <h1>同様なドメインでディープリンクの検証</h1>
 
   <button onclick="window.location.href='https://deeplink-a.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
-    は：https://deeplink-a.exartcn.com/
+    ディープリンクドメインは：https://deeplink-a.exartcn.com/
   </button>
 
   <button onclick="window.location.href='https://deeplink.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
