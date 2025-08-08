@@ -250,12 +250,16 @@ app.get("/deeplink/check", (req, res) => {
 <body>
   <h1>同様なドメインでディープリンクの検証</h1>
 
-  <button onclick="window.location.href='http://deeplink-a.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
-    ディープリンクドメインは：http://deeplink-a.exartcn.com/
+  <button onclick="window.location.href='https://deeplink-a.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
+    は：https://deeplink-a.exartcn.com/
   </button>
 
-  <button onclick="window.location.href='http://deeplink.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
-    ディープリンクドメインは：http://deeplink.exartcn.com/
+  <button onclick="window.location.href='https://deeplink.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
+    ディープリンクドメインは：https://deeplink.exartcn.com/
+  </button>
+
+  <button onclick="window.location.href='https://deeplink-test-e53b3c0ebf7b.herokuapp.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
+    結合テストディープリンクドメインは：https://deeplink-test-e53b3c0ebf7b.herokuapp.com
   </button>
 
 </body>
