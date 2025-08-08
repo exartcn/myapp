@@ -219,14 +219,14 @@ app.get("/deeplink/check", (req, res) => {
   <title>Deeplink Demo</title>
 </head>
 <body>
-  <h1>点击下方按钮启动 App</h1>
+  <h1>同様なドメインでディープリンクの検証</h1>
 
   <button onclick="window.location.href='http://deeplink-a.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
-    http://deeplink-a.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6
+    ディープリンクドメインは：http://deeplink-a.exartcn.com/
   </button>
 
   <button onclick="window.location.href='http://deeplink.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
-    http://deeplink.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6
+    ディープリンクドメインは：http://deeplink.exartcn.com/
   </button>
 
  
