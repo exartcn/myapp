@@ -128,7 +128,7 @@ app.get("/cmm-bff/common/auth/deeplink/:id?", (req, res) => {
   } else if (/android/.test(userAgent)) {
     // Android デバイス - Google Play へリダイレクト
     res.redirect(
-      "https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill"
+      "https://play.google.com/store/apps/details?id=jp.go.jhf.authenticator"
     );
   } else if (/windows/.test(userAgent)) {
     res.redirect("ms-windows-store://pdp/?ProductId=9nh2gph4jzs4");
@@ -250,12 +250,12 @@ app.get("/deeplink/check", (req, res) => {
 <body>
   <h1>同様なドメインでディープリンクの検証</h1>
 
-  <button onclick="window.location.href='https://deeplink-a.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
-    ディープリンクドメインは：https://deeplink-a.exartcn.com/
-  </button>
-
   <button onclick="window.location.href='https://deeplink.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
     ディープリンクドメインは：https://deeplink.exartcn.com/
+  </button>
+
+  <button onclick="window.location.href='https://child.deeplink.exartcn.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
+    ディープリンクドメインは：https://child.deeplink.exartcn.com/
   </button>
 
   <button onclick="window.location.href='https://deeplink-test-e53b3c0ebf7b.herokuapp.com/cmm-bff/common/auth/deeplink/B40955a715ba43E893eF4398e24fc1d6'">
