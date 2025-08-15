@@ -128,7 +128,7 @@ app.get("/cmm-bff/common/auth/deeplink/:id?", (req, res) => {
   } else if (/android/.test(userAgent)) {
     // Android デバイス - Google Play へリダイレクト
     res.redirect(
-      "https://play.google.com/store/apps/details?id=jp.go.jhf.authenticator"
+      "https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill"
     );
   } else if (/windows/.test(userAgent)) {
     res.redirect("ms-windows-store://pdp/?ProductId=9nh2gph4jzs4");
