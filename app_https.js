@@ -123,18 +123,18 @@ app.get("/cmm-bff/common/auth/deeplink/:id?", (req, res) => {
   if (/iphone|ipad|ipod/.test(userAgent)) {
     // iOS デバイス - App Store へリダイレクト
     res.redirect(
-      "https://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864"
+      "https://apps.apple.com/jp/app/%E4%BD%8F%E5%AE%85%E9%87%91%E8%9E%8D%E6%94%AF%E6%8F%B4%E6%A9%9F%E6%A7%8B%E8%AA%8D%E8%A8%BC%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3/id6747013128"
     );
   } else if (/android/.test(userAgent)) {
     // Android デバイス - Google Play へリダイレクト
     res.redirect(
-      "https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill"
+      "https://play.google.com/store/apps/details?id=jp.go.jhf.authenticator"
     );
   } else if (/windows/.test(userAgent)) {
-    res.redirect("ms-windows-store://pdp/?ProductId=9nh2gph4jzs4");
+    res.redirect("ms-windows-store://pdp/?ProductId=9NL7KQRVBZH4");
   } else if (/mac/.test(userAgent)) {
     res.redirect(
-      "macappstore://apps.apple.com/jp/app/tiktok-%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E3%83%88%E3%83%83%E3%82%AF/id1235601864"
+      "macappstore://apps.apple.com/jp/app/%E4%BD%8F%E5%AE%85%E9%87%91%E8%9E%8D%E6%94%AF%E6%8F%B4%E6%A9%9F%E6%A7%8B%E8%AA%8D%E8%A8%BC%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3forpc/id6749533650"
     );
   } else {
     // その他のデバイス - デフォルトページを表示
