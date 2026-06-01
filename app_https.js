@@ -4,6 +4,9 @@ const express = require("express");
 const path = require("path");
 
 const app = express();
+app.use(express.json({ limit: "10mb" }));
+
+let uploadedJson = null;
 
 // 读取 SSL 证书和私钥
 const options = {
@@ -207,6 +210,135 @@ app.get("/privacy/privacy-policy", (req, res) => {
     </body>
     </html>
   `);
+});
+
+app.get("/json-upload", (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="ja">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>JSON Upload</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 24px;
+          color: #222;
+          background: #f6f8fa;
+        }
+
+        main {
+          max-width: 960px;
+          margin: 0 auto;
+        }
+
+        button {
+          padding: 10px 16px;
+          font-size: 16px;
+          color: #fff;
+          background: #0a66c2;
+          border: 0;
+          border-radius: 6px;
+          cursor: pointer;
+        }
+
+        button:hover {
+          background: #084f96;
+        }
+
+        input {
+          display: none;
+        }
+
+        pre {
+          min-height: 240px;
+          padding: 16px;
+          overflow: auto;
+          background: #fff;
+          border: 1px solid #d0d7de;
+          border-radius: 6px;
+          white-space: pre-wrap;
+          word-break: break-word;
+        }
+
+        #status {
+          margin: 12px 0;
+          min-height: 20px;
+        }
+      </style>
+    </head>
+    <body>
+      <main>
+        <h1>JSON Upload</h1>
+        <button id="uploadButton" type="button">Upload JSON</button>
+        <input id="jsonFile" type="file" accept="application/json,.json">
+        <p id="status"></p>
+        <pre id="jsonPreview">No JSON uploaded.</pre>
+      </main>
+
+      <script>
+        const uploadButton = document.getElementById("uploadButton");
+        const jsonFile = document.getElementById("jsonFile");
+        const status = document.getElementById("status");
+        const jsonPreview = document.getElementById("jsonPreview");
+
+        uploadButton.addEventListener("click", () => {
+          jsonFile.click();
+        });
+
+        jsonFile.addEventListener("change", async () => {
+          const file = jsonFile.files[0];
+
+          if (!file) {
+            return;
+          }
+
+          try {
+            const text = await file.text();
+            const json = JSON.parse(text);
+
+            jsonPreview.textContent = JSON.stringify(json, null, 2);
+            status.textContent = "Parsed JSON. Saving to server memory...";
+
+            const response = await fetch("/json-upload", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(json),
+            });
+
+            if (!response.ok) {
+              throw new Error("Save failed: " + response.status);
+            }
+
+            status.textContent = "JSON saved in server memory.";
+          } catch (error) {
+            status.textContent = "Invalid JSON or save failed.";
+            jsonPreview.textContent = error.message;
+          } finally {
+            jsonFile.value = "";
+          }
+        });
+      </script>
+    </body>
+    </html>
+  `);
+});
+
+app.post("/json-upload", (req, res) => {
+  uploadedJson = req.body;
+  res.json({ saved: true });
+});
+
+app.get("/json-data", (req, res) => {
+  if (uploadedJson === null) {
+    return res.status(404).json({ error: "No JSON uploaded." });
+  }
+
+  res.json(uploadedJson);
 });
 
 
