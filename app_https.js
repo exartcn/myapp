@@ -456,7 +456,10 @@ app.get("/cmm/msg", (req, res) => {
     return res.status(404).json({ error: "No JSON uploaded." });
   }
 
-  res.json(uploadedJson);
+  res.json({
+    updateTime: msgUpdateTime,
+    messages: uploadedJson,
+  });
 });
 
 app.get("/cmm/msgupdatetime", (req, res) => {
