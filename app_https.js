@@ -453,7 +453,7 @@ app.post("/json-upload", (req, res) => {
 
 app.get("/cmm/msg", (req, res) => {
   if (uploadedJson === null) {
-    return res.status(404).json({ error: "No JSON uploaded." });
+    return res.status(200).json({});
   }
 
   res.json({
