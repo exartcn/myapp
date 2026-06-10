@@ -444,10 +444,8 @@ app.get("/json-upload", (req, res) => {
 
 app.post("/json-upload", (req, res) => {
   uploadedJson = req.body;
-  const requestedUpdateTime = req.get("X-Msg-Update-Time") || "";
-  msgUpdateTime = DATE_TIME_PATTERN.test(requestedUpdateTime)
-    ? requestedUpdateTime
-    : formatDateTime(new Date());
+  msgUpdateTime = uploadedJson.updateTime;
+  
   res.json({ saved: true, updateTime: msgUpdateTime });
 });
 
