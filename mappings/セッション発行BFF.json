@@ -1,0 +1,16 @@
+{
+  "request": {
+    "url": "/cmm-bff/common/auth/users/session/create",
+    "method": "POST"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"sessionId\":\"ABCDE12345XXX123ABCDE12345XXX123\"}",
+    "headers": {
+      "Content-Type": "application/json; charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "X-Requested-With": "XMLHttpRequest"
+    }
+  }
+}

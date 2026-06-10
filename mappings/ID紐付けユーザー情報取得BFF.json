@@ -1,0 +1,16 @@
+{
+  "request": {
+    "url": "/cmm-bff/common/auth/users/link",
+    "method": "POST"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"hmdkRykhFlg\":\"1\",\"myPageJhList\":[{\"userId\":\"ca123457\",\"loginUserFlg\":\"1\",\"anknBnr\":\"1\",\"loginAppList\":[{\"appM\":\"004\",\"systemBng\":\"004\"}],\"knjSm\":\"田中太郎\",\"knSm\":\"タナカタロウ\",\"status\":\"4\",\"sknShsJh\":{\"zndk\":\"80000\",\"krirGk\":\"100000\",\"trtkKnykkn\":\"岩手県信用農業協同組合連合会\",\"krirKnr\":\"3.0%\",\"hnsShryB\":\"20260127\",\"ysShbt\":\"フラット35\",\"errUm\":\"1\",\"errCode\":\"MWBXXXX\",\"errMsg\":\"利用者氏名変更エラーが発生しました。\"},\"ysShsJh\":{\"trkmtAprM\":\"災害復興住宅融資\"}},{\"userId\":\"ca123458\",\"loginUserFlg\":\"0\",\"anknBnr\":\"1\",\"loginAppList\":[{\"appM\":\"004\",\"systemBng\":\"004\"},{\"appM\":\"001\",\"systemBng\":\"001\"}],\"knjSm\":\"佐藤花子\",\"knSm\":\"サトウハナコ\",\"status\":\"2\",\"sknShsJh\":{\"zndk\":\"99999\",\"krirGk\":\"99999\",\"trtkKnykkn\":\"〇〇銀行\",\"krirKnr\":\"1.8%\",\"hnsShryB\":\"20301225\",\"ysShbt\":\"災害復興住宅融資\",\"errUm\":\"\",\"errCode\":\"\",\"errMsg\":\"\"},\"ysShsJh\":{\"trkmtAprM\":\"災害復興住宅融資\"}},{\"userId\":\"ca123457\",\"loginUserFlg\":\"0\",\"anknBnr\":\"2\",\"loginAppList\":[{\"appM\":\"001\",\"systemBng\":\"001\"}],\"knjSm\":\"\",\"knSm\":\"\",\"status\":\"1\",\"sknShsJh\":{\"zndk\":\"\",\"krirGk\":\"\",\"trtkKnykkn\":\"\",\"krirKnr\":\"\",\"hnsShryB\":\"\",\"ysShbt\":\"\",\"errUm\":\"\",\"errCode\":\"\",\"errMsg\":\"\"},\"ysShsJh\":{\"trkmtAprM\":\"災害復興住宅融資\"}}]}",
+    "headers": {
+      "Content-Type": "application/json; charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "X-Requested-With": "XMLHttpRequest"
+    }
+  }
+}

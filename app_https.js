@@ -5,6 +5,156 @@ const path = require("path");
 
 const app = express();
 app.use(express.json({ limit: "10mb" }));
+
+function loadWireMockMappings() {
+  const mappingsDir = path.join(__dirname, "mappings");
+
+  if (!fs.existsSync(mappingsDir)) {
+    return [];
+  }
+
+  return fs
+    .readdirSync(mappingsDir)
+    .filter((fileName) => fileName.toLowerCase().endsWith(".json"))
+    .map((fileName) => {
+      const filePath = path.join(mappingsDir, fileName);
+
+      try {
+        const mapping = JSON.parse(fs.readFileSync(filePath, "utf8"));
+        return { fileName, mapping };
+      } catch (error) {
+        console.error(`[WireMock] Failed to load ${fileName}:`, error.message);
+        return null;
+      }
+    })
+    .filter(Boolean);
+}
+
+function matchesWireMockUrl(requestConfig, req) {
+  const requestUrl = req.originalUrl;
+  const requestPath = req.path;
+
+  if (requestConfig.url) {
+    return requestConfig.url === requestUrl || requestConfig.url === requestPath;
+  }
+
+  if (requestConfig.urlPath) {
+    return requestConfig.urlPath === requestPath;
+  }
+
+  if (requestConfig.urlPattern) {
+    return new RegExp(requestConfig.urlPattern).test(requestUrl);
+  }
+
+  if (requestConfig.urlPathPattern) {
+    return new RegExp(requestConfig.urlPathPattern).test(requestPath);
+  }
+
+  return false;
+}
+
+function matchesJsonPathPattern(pattern, body) {
+  const match = pattern.match(/^\$\[\?\(@\.([A-Za-z0-9_]+)\s*==\s*'([^']*)'\)\]$/);
+
+  if (!match || !body || typeof body !== "object") {
+    return false;
+  }
+
+  const [, propertyName, expectedValue] = match;
+  return String(body[propertyName]) === expectedValue;
+}
+
+function matchesWireMockBody(requestConfig, req) {
+  const bodyPatterns = requestConfig.bodyPatterns || [];
+
+  if (bodyPatterns.length === 0) {
+    return true;
+  }
+
+  return bodyPatterns.every((pattern) => {
+    if (pattern.matchesJsonPath) {
+      return matchesJsonPathPattern(pattern.matchesJsonPath, req.body);
+    }
+
+    if (pattern.equalToJson) {
+      const expected =
+        typeof pattern.equalToJson === "string"
+          ? JSON.parse(pattern.equalToJson)
+          : pattern.equalToJson;
+      return JSON.stringify(req.body) === JSON.stringify(expected);
+    }
+
+    return false;
+  });
+}
+
+function sendWireMockResponse(res, responseConfig = {}) {
+  const status = responseConfig.status || 200;
+  const headers = responseConfig.headers || {};
+
+  Object.entries(headers).forEach(([name, value]) => {
+    res.set(name, value);
+  });
+
+  res.status(status);
+
+  if (Object.prototype.hasOwnProperty.call(responseConfig, "jsonBody")) {
+    return res.json(responseConfig.jsonBody);
+  }
+
+  if (Object.prototype.hasOwnProperty.call(responseConfig, "body")) {
+    return res.send(responseConfig.body);
+  }
+
+  return res.end();
+}
+
+const wireMockMappings = loadWireMockMappings();
+const existingRouteKeys = new Set([
+  "POST /json-upload",
+  "GET /cmm/msg",
+  "GET /cmm/msgupdatetime",
+  "GET /cmm/allJhList",
+]);
+
+app.use((req, res, next) => {
+  if (existingRouteKeys.has(`${req.method} ${req.path}`)) {
+    return next();
+  }
+
+  const candidates = wireMockMappings.filter(({ mapping }) => {
+    const requestConfig = mapping.request || {};
+    const method = (requestConfig.method || "GET").toUpperCase();
+
+    return method === req.method && matchesWireMockUrl(requestConfig, req);
+  });
+
+  const matched =
+    candidates.find(({ mapping }) => {
+      const requestConfig = mapping.request || {};
+      return (
+        (requestConfig.bodyPatterns || []).length > 0 &&
+        matchesWireMockBody(requestConfig, req)
+      );
+    }) ||
+    candidates.find(({ mapping }) => {
+      const requestConfig = mapping.request || {};
+      return (
+        (requestConfig.bodyPatterns || []).length === 0 &&
+        matchesWireMockBody(requestConfig, req)
+      );
+    });
+
+  if (!matched) {
+    return next();
+  }
+
+  console.log(`[WireMock] ${req.method} ${req.originalUrl} -> ${matched.fileName}`);
+  return sendWireMockResponse(res, matched.mapping.response);
+});
+
+console.log(`[WireMock] Loaded ${wireMockMappings.length} mapping(s)`);
+
 app.use((req, res, next) => {
   res.set("Access-Control-Allow-Origin", "*");
   res.set("Access-Control-Allow-Headers", "Content-Type, X-Msg-Update-Time");

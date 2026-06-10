@@ -1,0 +1,16 @@
+{
+  "request": {
+    "url": "/cmm/msgupdatetime",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"updateTime\":\"2026-01-01 00:00:00\"}",
+    "headers": {
+      "Content-Type": "application/json; charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "X-Requested-With": "XMLHttpRequest"
+    }
+  }
+}

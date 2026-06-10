@@ -1,0 +1,16 @@
+{
+  "request": {
+    "url": "/cmm-bff/common/auth/users/tokenverify",
+    "method": "POST"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"accessToken\":\"GZTXM4DIKFIHAZJSOQ4W2MRUN5LDQZZW\",\"refreshToken\":\"ayJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJOQW5uOEVNQUcyZU5WNmwtSTN4aGJMSFpURWk3dkpVTEtFTjZCaFBuLUlnIn0.eyJleHAiOjE3NTE4NjQyOTgsImlhdCI6MTc1MTg2Mzk5OCwianRpIjoiMmY2NGViOTUtYjBmZi00OWJkLTlkMDktMjJhYmUyOTg0MTJjIiwiaXNzIjoiaHR\"}",
+    "headers": {
+      "Content-Type": "application/json; charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "X-Requested-With": "XMLHttpRequest"
+    }
+  }
+}
