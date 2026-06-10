@@ -608,6 +608,10 @@ app.get("/cmm/msg", (req, res) => {
 });
 
 app.get("/cmm/msgupdatetime", (req, res) => {
+  if (!msgUpdateTime) {
+    return res.status(200).json({});
+  }
+
   res.json({ updateTime: msgUpdateTime });
 });
 
