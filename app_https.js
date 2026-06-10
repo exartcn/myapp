@@ -454,10 +454,7 @@ app.get("/cmm/msg", (req, res) => {
     return res.status(200).json({});
   }
 
-  res.json({
-    updateTime: msgUpdateTime,
-    messages: uploadedJson,
-  });
+  res.json(uploadedJson);
 });
 
 app.get("/cmm/msgupdatetime", (req, res) => {
