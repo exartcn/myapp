@@ -157,7 +157,7 @@ console.log(`[WireMock] Loaded ${wireMockMappings.length} mapping(s)`);
 
 app.use((req, res, next) => {
   res.set("Access-Control-Allow-Origin", "*");
-  res.set("Access-Control-Allow-Headers", "Content-Type, X-Msg-Update-Time");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
   res.set("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
 
   if (req.method === "OPTIONS") {
@@ -169,25 +169,6 @@ app.use((req, res, next) => {
 
 let uploadedJson = null;
 let msgUpdateTime = "";
-const DATE_TIME_PATTERN = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
-
-function formatDateTime(date) {
-  const pad = (value) => String(value).padStart(2, "0");
-
-  return (
-    date.getFullYear() +
-    "-" +
-    pad(date.getMonth() + 1) +
-    "-" +
-    pad(date.getDate()) +
-    " " +
-    pad(date.getHours()) +
-    ":" +
-    pad(date.getMinutes()) +
-    ":" +
-    pad(date.getSeconds())
-  );
-}
 
 // 读取 SSL 证书和私钥
 const options = {
@@ -438,27 +419,6 @@ app.get("/json-upload", (req, res) => {
           display: none;
         }
 
-        .field {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 8px;
-          margin: 16px 0 8px;
-        }
-
-        label {
-          font-weight: 700;
-        }
-
-        input[type="text"] {
-          width: 220px;
-          max-width: 100%;
-          padding: 9px 10px;
-          font-size: 16px;
-          border: 1px solid #d0d7de;
-          border-radius: 6px;
-        }
-
         pre {
           min-height: 240px;
           padding: 16px;
@@ -479,56 +439,23 @@ app.get("/json-upload", (req, res) => {
     <body>
       <main>
         <h1>JSON Upload</h1>
-        <button id="uploadButton" type="button">Upload JSON</button>
+        <button id="uploadTimeButton" type="button">Upload Time</button>
         <input id="jsonFile" type="file" accept="application/json,.json">
-        <div class="field">
-          <label for="msgUpdateTime">msgupdatetime</label>
-          <input id="msgUpdateTime" type="text" placeholder="yyyy-MM-dd HH:mm:ss">
-          <button id="saveButton" type="button" disabled>Save</button>
-        </div>
         <p id="status"></p>
         <pre id="jsonPreview">No JSON uploaded.</pre>
       </main>
 
       <script>
-        const uploadButton = document.getElementById("uploadButton");
-        const saveButton = document.getElementById("saveButton");
+        const uploadTimeButton = document.getElementById("uploadTimeButton");
         const jsonFile = document.getElementById("jsonFile");
-        const msgUpdateTime = document.getElementById("msgUpdateTime");
         const status = document.getElementById("status");
         const jsonPreview = document.getElementById("jsonPreview");
-        const dateTimePattern = /^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$/;
 
         let currentJson = null;
-
-        function formatDateTime(date) {
-          const pad = (value) => String(value).padStart(2, "0");
-
-          return (
-            date.getFullYear() +
-            "-" +
-            pad(date.getMonth() + 1) +
-            "-" +
-            pad(date.getDate()) +
-            " " +
-            pad(date.getHours()) +
-            ":" +
-            pad(date.getMinutes()) +
-            ":" +
-            pad(date.getSeconds())
-          );
-        }
 
         async function saveJson() {
           if (currentJson === null) {
             status.textContent = "Upload JSON first.";
-            return;
-          }
-
-          const updateTime = msgUpdateTime.value.trim();
-
-          if (!dateTimePattern.test(updateTime)) {
-            status.textContent = "msgupdatetime must be yyyy-MM-dd HH:mm:ss.";
             return;
           }
 
@@ -538,7 +465,6 @@ app.get("/json-upload", (req, res) => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "X-Msg-Update-Time": updateTime,
             },
             body: JSON.stringify(currentJson),
           });
@@ -547,20 +473,12 @@ app.get("/json-upload", (req, res) => {
             throw new Error("Save failed: " + response.status);
           }
 
-          status.textContent = "JSON and msgupdatetime saved in server memory.";
+          const result = await response.json();
+          status.textContent = "JSON saved. upload time: " + result.updateTime;
         }
 
-        uploadButton.addEventListener("click", () => {
+        uploadTimeButton.addEventListener("click", () => {
           jsonFile.click();
-        });
-
-        saveButton.addEventListener("click", async () => {
-          try {
-            await saveJson();
-          } catch (error) {
-            status.textContent = "Save failed.";
-            jsonPreview.textContent = error.message;
-          }
         });
 
         jsonFile.addEventListener("change", async () => {
@@ -575,8 +493,6 @@ app.get("/json-upload", (req, res) => {
             const json = JSON.parse(text);
 
             currentJson = json;
-            msgUpdateTime.value = formatDateTime(new Date());
-            saveButton.disabled = false;
             jsonPreview.textContent = JSON.stringify(json, null, 2);
             await saveJson();
           } catch (error) {
@@ -593,8 +509,15 @@ app.get("/json-upload", (req, res) => {
 });
 
 app.post("/json-upload", (req, res) => {
-  uploadedJson = req.body;
-  msgUpdateTime = uploadedJson.updateTime;
+  const nextUploadedJson = req.body;
+  const nextMsgUpdateTime = nextUploadedJson?.updateTime;
+
+  if (!nextMsgUpdateTime) {
+    return res.status(400).json({ error: "updateTime is required." });
+  }
+
+  uploadedJson = nextUploadedJson;
+  msgUpdateTime = nextMsgUpdateTime;
   
   res.json({ saved: true, updateTime: msgUpdateTime });
 });
