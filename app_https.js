@@ -6,6 +6,89 @@ const path = require("path");
 const app = express();
 app.use(express.json({ limit: "10mb" }));
 
+const allJhListJsonDir = path.join(__dirname, "allJhListJson");
+
+function ensureAllJhListJsonDir() {
+  if (!fs.existsSync(allJhListJsonDir)) {
+    fs.mkdirSync(allJhListJsonDir, { recursive: true });
+  }
+}
+
+function sanitizeJsonFileName(fileName) {
+  const baseName = path.basename(String(fileName || "").replace(/\\/g, "/"));
+  return baseName.replace(/[<>:"/\\|?*\x00-\x1F]/g, "_");
+}
+
+function parseMultipartJsonFiles(req) {
+  return new Promise((resolve, reject) => {
+    const contentType = req.headers["content-type"] || "";
+    const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^;]+))/i);
+
+    if (!boundaryMatch) {
+      reject(new Error("multipart/form-data boundary is required."));
+      return;
+    }
+
+    const boundary = `--${boundaryMatch[1] || boundaryMatch[2]}`;
+    const chunks = [];
+    let totalSize = 0;
+    const maxSize = 50 * 1024 * 1024;
+
+    req.on("data", (chunk) => {
+      totalSize += chunk.length;
+
+      if (totalSize > maxSize) {
+        reject(new Error("Upload payload is too large."));
+        req.destroy();
+        return;
+      }
+
+      chunks.push(chunk);
+    });
+
+    req.on("end", () => {
+      const body = Buffer.concat(chunks).toString("utf8");
+      const files = body
+        .split(boundary)
+        .map((part) => part.trim())
+        .filter((part) => part && part !== "--")
+        .map((part) => {
+          const separatorIndex = part.indexOf("\r\n\r\n");
+
+          if (separatorIndex === -1) {
+            return null;
+          }
+
+          const rawHeaders = part.slice(0, separatorIndex);
+          const content = part
+            .slice(separatorIndex + 4)
+            .replace(/\r\n--$/, "")
+            .replace(/--$/, "")
+            .replace(/\r\n$/, "");
+          const disposition = rawHeaders
+            .split("\r\n")
+            .find((header) => header.toLowerCase().startsWith("content-disposition:"));
+          const fileNameMatch = disposition && disposition.match(/filename="([^"]*)"/i);
+
+          if (!fileNameMatch || !fileNameMatch[1]) {
+            return null;
+          }
+
+          return {
+            originalName: fileNameMatch[1],
+            fileName: sanitizeJsonFileName(fileNameMatch[1]),
+            content,
+          };
+        })
+        .filter(Boolean);
+
+      resolve(files);
+    });
+
+    req.on("error", reject);
+  });
+}
+
 function loadWireMockMappings() {
   const mappingsDir = path.join(__dirname, "mappings");
 
@@ -115,6 +198,7 @@ const existingRouteKeys = new Set([
   "GET /cmm/msg",
   "GET /cmm/msgupdatetime",
   "GET /cmm/allJhList",
+  "POST /cmm/allJhList/upload",
 ]);
 
 app.use((req, res, next) => {
@@ -536,6 +620,65 @@ app.get("/cmm/msgupdatetime", (req, res) => {
   }
 
   res.json({ updateTime: msgUpdateTime });
+});
+
+app.post("/cmm/allJhList/upload", async (req, res) => {
+  if (!req.is("multipart/form-data")) {
+    return res.status(415).json({ error: "Content-Type must be multipart/form-data." });
+  }
+
+  try {
+    const files = await parseMultipartJsonFiles(req);
+
+    if (files.length === 0) {
+      return res.status(400).json({ error: "At least one json file is required." });
+    }
+
+    ensureAllJhListJsonDir();
+
+    const savedFiles = [];
+    for (const file of files) {
+      if (!file.fileName.toLowerCase().endsWith(".json")) {
+        return res.status(400).json({ error: `${file.originalName} is not a .json file.` });
+      }
+
+      JSON.parse(file.content);
+
+      const filePath = path.resolve(allJhListJsonDir, file.fileName);
+      if (!filePath.startsWith(path.resolve(allJhListJsonDir) + path.sep)) {
+        return res.status(400).json({ error: `${file.originalName} is not a valid file name.` });
+      }
+
+      fs.writeFileSync(filePath, file.content, "utf8");
+      savedFiles.push({
+        fileName: file.fileName,
+        url: `/cmm/allJhList/${encodeURIComponent(file.fileName)}`,
+      });
+    }
+
+    res.json({ saved: true, files: savedFiles });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+app.get("/cmm/allJhList/:fileName", (req, res) => {
+  const fileName = sanitizeJsonFileName(req.params.fileName);
+
+  if (!fileName || !fileName.toLowerCase().endsWith(".json")) {
+    return res.status(400).json({ error: "A .json file name is required." });
+  }
+
+  const filePath = path.resolve(allJhListJsonDir, fileName);
+  if (!filePath.startsWith(path.resolve(allJhListJsonDir) + path.sep)) {
+    return res.status(400).json({ error: "Invalid file name." });
+  }
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: "File not found." });
+  }
+
+  res.download(filePath, fileName);
 });
 
 app.get("/cmm/allJhList", (req, res) => {
